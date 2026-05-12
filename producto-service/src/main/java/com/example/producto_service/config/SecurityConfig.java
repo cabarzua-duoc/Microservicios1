@@ -4,6 +4,7 @@ import java.nio.charset.StandardCharsets;
 
 import javax.crypto.spec.SecretKeySpec;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -14,7 +15,8 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class SecurityConfig {
 
-    private final String SECRET = "esta_es_mi_compleja_clave_secreta";
+    @Value("${SECRET}")
+    private String secret;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -33,9 +35,10 @@ public class SecurityConfig {
     @Bean
     public JwtDecoder jwtDecoder() {
         SecretKeySpec key = new SecretKeySpec(
-            SECRET.getBytes(StandardCharsets.UTF_8),
+            secret.getBytes(StandardCharsets.UTF_8),
             "HmacSHA512"
         );
+
         return NimbusJwtDecoder.withSecretKey(key).build();
     }
 }
