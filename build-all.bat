@@ -5,7 +5,7 @@ FOR /f %%i IN ('docker images -aq') DO docker rmi -f %%i
 cd api-gateway
 call .\mvnw clean package -DskipTests
 
-cd ../auth-ser
+cd ../auth-service
 call .\mvnw clean package -DskipTests
 
 cd ../cliente-service
